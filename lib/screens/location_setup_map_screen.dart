@@ -23,10 +23,12 @@ class _LocationSelectionState extends State<LocationSelection> {
 
   late Position position;
   late Widget _child;
-  
-
+  LatLng latlng = LatLng(0.0, 0.0);
+  // late LatLng latlng;
   late GoogleMapController mapController;
   // List<Marker> allMarkers = [];
+  final List<Marker> _markers = [];
+
   @override
   void initState() {
     _child = const Center(
@@ -87,9 +89,9 @@ class _LocationSelectionState extends State<LocationSelection> {
               );
             },
           ),
-          title: const Text('Drag Marker to Select Location',
+          title: const Text('Select Location',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 26,
                 fontWeight: FontWeight.bold,
               )),
           centerTitle: true,
@@ -107,7 +109,7 @@ class _LocationSelectionState extends State<LocationSelection> {
                   color: Colors.black,
                   child: MaterialButton(
                       padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-                      minWidth: MediaQuery.of(context).size.width,
+                      minWidth: MediaQuery.of(context).size.width * 0.7,
                       onPressed: () async {
                         Position position = await Geolocator.getCurrentPosition(
                             desiredAccuracy:
@@ -130,13 +132,20 @@ class _LocationSelectionState extends State<LocationSelection> {
                       // updateLocation;
                       // Get.to(const LoginScreen());
                       child: const Text(
-                        "Set Location",
+                        "SELECT LOCATION",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 20,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       )),
+                )),
+            const Align(
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.location_searching_sharp,
+                  size: 50,
+                  color: Colors.black,
                 ))
           ],
         ));
@@ -145,70 +154,25 @@ class _LocationSelectionState extends State<LocationSelection> {
   Widget mapWidget() {
     return GoogleMap(
       mapType: MapType.normal,
-      markers: allMarkers(),
-      onMapCreated: onMapCreated,
+      // markers: _markers, //we want to have the marker class but not display the marker on the map
+      onMapCreated: (mapController) {
+        final marker = Marker(
+          markerId: const MarkerId('locmarker'),
+          position: LatLng(position.latitude, position.longitude),
+        );
+
+        _markers.add(marker);
+      },
+      onCameraMove: (object) {
+        setState(() {
+          _markers.first =
+              _markers.first.copyWith(positionParam: object.target);
+          latlng = object.target;
+        });
+      },
       initialCameraPosition: CameraPosition(
           target: LatLng(position.latitude, position.longitude), zoom: 17.0),
       myLocationButtonEnabled: true,
     );
   }
-
-  void onMapCreated(controller) {
-    setState(() {
-      mapController = controller;
-    });
-  }
-
-  Set<Marker> allMarkers() {
-    return <Marker>{
-      Marker(
-          draggable: true,
-          onDragEnd: ((position) async {
-            // Position position = await Geolocator.getCurrentPosition(
-            //     desiredAccuracy: LocationAccuracy.bestForNavigation);
-            final FirebaseAuth auth = FirebaseAuth.instance;
-            final User? user = auth.currentUser;
-            final uid = user!.uid;
-            FirebaseFirestore.instance
-                .collection('providers')
-                .doc(uid)
-                .set({
-                  'coords': new GeoPoint(position.latitude, position.longitude)
-                }, SetOptions(merge: true))
-                .then((value) =>
-                    Fluttertoast.showToast(msg: 'Location saved successfully'))
-                .catchError((error) => Fluttertoast.showToast(
-                    msg: "Failed to add location: $error"));
-          }),
-          markerId: const MarkerId('Locationmarker'),
-          position: LatLng(position.latitude, position.longitude),
-          icon: BitmapDescriptor.defaultMarker,
-          infoWindow: const InfoWindow(
-            title: 'User',
-          ))
-    };
-  }
-
-  // CollectionReference users =
-  //     FirebaseFirestore.instance.collection('providers');
-
-  // Future<DocumentReference<Map<String, dynamic>>> updateLocation() async {
-
-  //   return FirebaseFirestore.instance.collection('providers').doc(user.uid)
-  // }
-
-  // Future<void> updateLocation() {
-  //   // final FirebaseAuth auth = FirebaseAuth.instance;
-  //   // final User? user = auth.currentUser;
-  //   // final uid = user!.uid;
-
-  //   return FirebaseFirestore.instance.collection('locations').add({
-  //     'Location': GeoPoint(position.latitude, position.longitude),
-  //     'address': address
-  //   })
-  //     ..then((value) =>
-  //             Fluttertoast.showToast(msg: 'Location saved successfully'))
-  //         .catchError((error) =>
-  //             Fluttertoast.showToast(msg: "Failed to add location: $error"));
-  // }
 }
