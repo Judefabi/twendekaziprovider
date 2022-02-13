@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twendekaziprovider/screens/home_screen.dart';
 import 'package:twendekaziprovider/screens/notifications_screen.dart';
+import 'package:twendekaziprovider/screens/orders_screen.dart';
 import 'package:twendekaziprovider/screens/orders_screen_check.dart';
 import 'package:twendekaziprovider/screens/profile_screen.dart';
 import 'package:twendekaziprovider/screens/wallet_screen.dart';
@@ -34,7 +35,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.work_rounded),
-            title: Text('Wallet'),
+            title: Text('Orders'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.message),
@@ -56,7 +57,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   buildBody() {
     switch (_currentIndex) {
       case 1:
-        return OrdersScreenCheck();
+        return OrdersScreen();
       case 2:
         return const NotificationScreen();
       case 3:

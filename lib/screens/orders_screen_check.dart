@@ -63,7 +63,7 @@ class OrdersScreenCheck extends StatelessWidget {
             );
           },
         ),
-        title: const Text('products',
+        title: const Text('Products',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

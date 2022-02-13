@@ -8,23 +8,23 @@ class Service extends Equatable {
       serviceId; //we'll be using where serviceId = provserviceIder.serviceId
   final int providerId;
   final String servicename;
-  final String description; //required this will be the order total
+  final int servicerate; //required this will be the order total
   const Service(
       {required this.serviceId,
       required this.providerId,
       required this.servicename,
-      required this.description});
+      required this.servicerate});
 
   Service copyWith(
       {int? serviceId,
       int? providerId,
       String? servicename,
-      String? description}) {
+      int? servicerate}) {
     return Service(
         serviceId: serviceId ?? this.serviceId,
         providerId: providerId ?? this.providerId,
         servicename: servicename ?? this.servicename,
-        description: description ?? this.description);
+        servicerate: servicerate ?? this.servicerate);
   }
 
   Map<String, dynamic> toMap() {
@@ -32,7 +32,7 @@ class Service extends Equatable {
       'serviceId': serviceId,
       'providerId': providerId,
       'servicename': servicename,
-      'description': description,
+      'servicerate': servicerate,
     };
   }
 
@@ -41,45 +41,31 @@ class Service extends Equatable {
         serviceId: snap['serviceId'],
         providerId: snap['providerId'],
         servicename: snap['servicename'],
-        description: snap['description']);
+        servicerate: snap['servicerate']);
   }
   String toJson() => json.encode(toMap());
 
   @override
   List<Object> get props {
-    return [serviceId, providerId, servicename, description];
+    return [serviceId, providerId, servicename, servicerate];
   }
 
   static List<Service> services = [
     const Service(
-        serviceId: 1,
-        providerId: 2,
-        servicename: 'Laundry',
-        description:
-            'Laundry services Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum'),
+        serviceId: 1, providerId: 2, servicename: 'Laundry', servicerate: 450),
     const Service(
-        serviceId: 1,
-        providerId: 3,
-        servicename: 'Withdrawal',
-        description:
-            'Withdrawal to bank Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum'),
+        serviceId: 1, providerId: 3, servicename: 'Plumbing', servicerate: 500),
     const Service(
-        serviceId: 1,
-        providerId: 4,
-        servicename: 'Withdrawal',
-        description:
-            'Withdrawal to bank Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum'),
+        serviceId: 1, providerId: 4, servicename: 'Pruning', servicerate: 200),
     const Service(
         serviceId: 1,
         providerId: 5,
         servicename: 'Gardening',
-        description:
-            'Clearing bushes Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum'),
+        servicerate: 200),
     const Service(
         serviceId: 1,
         providerId: 6,
         servicename: 'Car repair',
-        description:
-            'Oil change Lorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum')
+        servicerate: 1300)
   ];
 }

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twendekaziprovider/navigation/bottom_navigation_bar.dart';
+import 'package:twendekaziprovider/screens/home_screen.dart';
 import 'package:twendekaziprovider/screens/location_setup_map_screen.dart';
 import 'package:twendekaziprovider/screens/location_setup_map_screen_test.dart';
 import 'package:twendekaziprovider/screens/new_product.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RegistrationScreen(),
+      home: const HomeScreen(),
       getPages: [
         GetPage(name: '/products', page: () => ProductScreen()),
         GetPage(name: '/products/new', page: () => NewProductScreen()),

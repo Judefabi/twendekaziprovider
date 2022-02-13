@@ -91,7 +91,7 @@ class _LocationSelectionState extends State<LocationSelection> {
           ),
           title: const Text('Select Location',
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               )),
           centerTitle: true,
@@ -99,6 +99,7 @@ class _LocationSelectionState extends State<LocationSelection> {
           foregroundColor: Colors.black,
         ),
         body: Stack(
+          alignment: Alignment.center,
           children: [
             Container(child: _child),
             Positioned(
@@ -111,9 +112,9 @@ class _LocationSelectionState extends State<LocationSelection> {
                       padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
                       minWidth: MediaQuery.of(context).size.width * 0.7,
                       onPressed: () async {
-                        Position position = await Geolocator.getCurrentPosition(
-                            desiredAccuracy:
-                                LocationAccuracy.bestForNavigation);
+                        // Position position = await Geolocator.getCurrentPosition(
+                        //     desiredAccuracy:
+                        //         LocationAccuracy.bestForNavigation);
                         final FirebaseAuth auth = FirebaseAuth.instance;
                         final User? user = auth.currentUser;
                         final uid = user!.uid;
@@ -143,7 +144,7 @@ class _LocationSelectionState extends State<LocationSelection> {
             const Align(
                 alignment: Alignment.center,
                 child: Icon(
-                  Icons.location_searching_sharp,
+                  Icons.push_pin_rounded,
                   size: 50,
                   color: Colors.black,
                 ))

@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:twendekaziprovider/controllers/product_controller.dart';
+import 'package:twendekaziprovider/controllers/service_controller.dart';
 import 'package:twendekaziprovider/model/product_model.dart';
 import 'package:twendekaziprovider/model/product_model.dart';
 import 'package:twendekaziprovider/model/services_model.dart';
@@ -19,7 +22,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
-
+  final ServiceController serviceController = Get.put(ServiceController());
+  final ProductController productController = Get.put(ProductController());
+  // final Service services;
   @override
   void initState() {
     super.initState();
@@ -38,176 +43,203 @@ class _HomeScreenState extends State<HomeScreen> {
     const urlImage =
         'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cG9ydHJhaXR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60';
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {},
-            );
-          },
-        ),
-        title: const Text('...',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            )),
-        centerTitle: true,
-        elevation: 0.0,
-        foregroundColor: Colors.black,
-        actions: [
-          const CircleAvatar(
-              radius: 20, backgroundImage: NetworkImage(urlImage)),
-          const SizedBox(
-            width: 10,
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.playlist_play_rounded),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.vertical(bottom: Radius.circular(32))),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Text('Twendekazi',
-                          style: TextStyle(
-                              fontSize: 25,
-                              // fontWeight: FontWeight.w500,
-                              color: Colors.black87)),
-                      const SizedBox(height: 5),
-                      const Text('--the kazi home',
-                          style: TextStyle(
-                              fontSize: 36,
-                              // fontWeight: FontWeight.w500,
-                              color: Colors.black)),
-                      const SizedBox(height: 30),
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: Color.fromRGBO(244, 243, 243, 1)),
-                        child: const TextField(
+        // appBar:
+        backgroundColor: Colors.grey[300],
+        body: SingleChildScrollView(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(
+              height: 75,
+            ),
+            //app bar
+            Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: Container(
+                height: 50,
+                child: const Icon(
+                  Icons.menu,
+                  size: 50,
+                ),
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.grey[200],
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+
+            //Job Categories
+            const Padding(
+              padding: EdgeInsets.only(left: 25),
+              child: Text(
+                'Your Kazi Home',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            //search area
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Container(
+                            height: 30,
+                            decoration: BoxDecoration(color: Colors.grey[200]),
+                            child: const Icon(
+                              Icons.search_rounded,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        const Expanded(
+                          child: TextField(
                             decoration: InputDecoration(
                                 border: InputBorder.none,
-                                prefixIcon:
-                                    Icon(Icons.search, color: Colors.black87),
-                                hintText: 'Find jobs',
-                                hintStyle: TextStyle(
-                                    color: Colors.grey, fontSize: 15))),
-                      ),
-                      const SizedBox(height: 25),
-                    ],
-                  )),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Your Services',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          TextButton(
-                            style: const ButtonStyle(),
-                            onPressed: () {},
-                            child: const Text(
-                              'Add Service',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.black54),
-                            ),
+                                hintText: "Search for jobs"),
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Container(
-                        height: 200,
-                        child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: Service.services.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                  height: 100,
-                                  child: categoryItem(
-                                    services: Service.services[index],
-                                  ));
-                            }),
-                      )
-                    ]),
+                        ),
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.circular(12)),
+                    child: const Icon(
+                      Icons.filter_alt_outlined,
+                      color: Colors.white,
+                    ),
+                  )
+                ])),
+            const SizedBox(
+              height: 50,
+            ),
+
+            //Job Categories
+            const Padding(
+              padding: EdgeInsets.only(left: 25),
+              child: Text(
+                'For You',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text('Latest Jobs',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+            ),
+            const SizedBox(height: 25),
+            Container(
+                height: 160,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: Service.services.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 25.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                              width: 200,
+                              padding: const EdgeInsets.all(12.0),
+                              color: (index % 2 == 0)
+                                  ? Colors.grey[200]
+                                  : Colors.grey[800],
+                              child: Column(
+                                children: [
+                                  Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                            height: 60,
+                                            child: Image.asset(
+                                                'assets/twendekazilogo.jpg')),
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: const Text(
+                                              'Top Provider',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            color: Colors.grey[500],
+                                          ),
+                                        )
+                                      ]),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      serviceController
+                                          .services[index].servicename,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: (index % 2 == 0)
+                                            ? Colors.black
+                                            : Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    'Kshs. ${serviceController.services[index].servicerate}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: (index % 2 == 0)
+                                          ? Colors.black
+                                          : Colors.white,
+                                    ),
+                                  )
+                                ],
                               )),
-                          TextButton(
-                            style: const ButtonStyle(),
-                            onPressed: () {},
-                            child: const Text(
-                              'Browse All',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.black54),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 15),
-                      Container(
-                        height: 500,
-                        child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: Service.services.length,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                  height: 100,
-                                  child: recentPosts(
-                                    product: Product.product[index],
-                                  ));
-                            }),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ]),
-              )
-            ]),
-      ),
-    );
+                        ),
+                      );
+                    })),
+            const SizedBox(
+              height: 50,
+            ),
+
+            //Job Categories
+            const Padding(
+              padding: EdgeInsets.only(left: 25),
+              child: Text(
+                'Latest Jobs',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              ),
+            ),
+            const SizedBox(height: 25),
+            Container(
+                height: 500,
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: Product.product.length,
+                    itemBuilder: (context, index) {
+                      return RecentPosts(
+                        product: productController.products[index],
+                      );
+                    }))
+          ]),
+        ));
   }
 
   // the logout function
@@ -218,8 +250,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class categoryItem extends StatelessWidget {
-  const categoryItem({
+class JobCards extends StatelessWidget {
+  const JobCards({
     Key? key,
     required this.services,
   }) : super(key: key);
@@ -228,47 +260,51 @@ class categoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 2.4 / 3,
-      child: Container(
-          margin: const EdgeInsets.only(right: 15.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            image: const DecorationImage(
-                fit: BoxFit.cover, image: AssetImage('assets/logo.png')),
-          ),
-          child: Container(
-            alignment: Alignment.topCenter,
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              services.servicename,
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                  begin: Alignment.bottomRight,
-                  stops: const [
-                    0.1,
-                    0.9
-                  ],
-                  colors: [
-                    Colors.black.withOpacity(.8),
-                    Colors.black.withOpacity(.1)
-                  ]),
-            ),
-          )),
+    return Padding(
+      padding: const EdgeInsets.only(left: 25.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+            width: 200,
+            padding: const EdgeInsets.all(12.0),
+            color: Colors.grey[200],
+            child: Column(
+              children: [
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(height: 60, child: Image.asset('')),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: const Text(
+                            'Top Provider',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Colors.grey[500],
+                        ),
+                      )
+                    ]),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    services.servicename,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22),
+                  ),
+                ),
+                Text('Kshs. ${services.servicerate}')
+              ],
+            )),
+      ),
     );
   }
 }
 
-class recentPosts extends StatelessWidget {
-  const recentPosts({
+class RecentPosts extends StatelessWidget {
+  const RecentPosts({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -280,39 +316,57 @@ class recentPosts extends StatelessWidget {
     return Card(
       child: InkWell(
         onTap: () {},
-        child: ListTile(
-          leading: const CircleAvatar(
-            child: Text('TK'),
-            backgroundColor: Colors.black87,
-          ),
-          title: Text(product.productname,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16)),
-          subtitle: Text(product.productname,
-              style: const TextStyle(color: Colors.black45, fontSize: 16)),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text('Kshs. ${product.productname}',
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16)),
-              // Text(DateFormat('dd-MM-yy').format(product.productcreatedAt),
-              //     style: const TextStyle(
-              //         fontSize: 12,
-              //         fontWeight: FontWeight.bold,
-              //         color: Colors.black87)),
-            ],
-          ),
-        ),
+        child: Padding(
+            padding: EdgeInsets.only(bottom: 12.0),
+            child: Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(6)),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                                padding: const EdgeInsets.all(12),
+                                color: Colors.grey[300],
+                                height: 50,
+                                child: Image.asset(''))),
+                        const SizedBox(width: 10),
+                        Column(children: [
+                          Text(
+                            product.productname,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${product.productid}',
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
+                          )
+                        ]),
+                      ]),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Container(
+                              padding: const EdgeInsets.all(5),
+                              color: Colors.green[300],
+                              child: Text(
+                                'Kshs. ${product.productprice}',
+                                style: const TextStyle(color: Colors.white),
+                              )))
+                    ]))),
       ),
     );
   }
 }
-
 
 // ActionChip(
 //     label: const Text("Logout"),
