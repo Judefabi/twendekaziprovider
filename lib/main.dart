@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twendekaziprovider/navigation/bottom_navigation_bar.dart';
 import 'package:twendekaziprovider/screens/home_screen.dart';
-import 'package:twendekaziprovider/screens/login_screen.dart';
-import 'package:twendekaziprovider/screens/new_product.dart';
+import 'package:twendekaziprovider/screens/new_service.dart';
 import 'package:twendekaziprovider/screens/notifications_screen.dart';
-import 'package:twendekaziprovider/screens/orders_screen_check.dart';
-import 'package:twendekaziprovider/screens/products_screen.dart';
+import 'package:twendekaziprovider/screens/orders_screen.dart';
+import 'package:twendekaziprovider/dead%20code/orders_screen_check.dart';
+import 'package:twendekaziprovider/dead%20code/products_screen.dart';
 import 'package:twendekaziprovider/screens/profile_screen.dart';
 import 'package:twendekaziprovider/screens/wallet_screen.dart';
 
@@ -33,11 +33,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: const BottomNavBar(),
       getPages: [
-        GetPage(name: '/products', page: () => ProductScreen()),
-        GetPage(name: '/products/new', page: () => NewProductScreen()),
-        GetPage(name: '/orders', page: () => OrdersScreenCheck()),
+        GetPage(name: '/products/new', page: () => NewServiceScreen()),
+        GetPage(name: '/orders', page: () => OrdersScreen()),
         GetPage(name: '/notifications', page: () => const NotificationScreen()),
         GetPage(name: '/profile', page: () => const ProfileScreen()),
         GetPage(name: '/wallet', page: () => const WalletScreen())

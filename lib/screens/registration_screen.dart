@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:twendekaziprovider/screens/location_setup_map_screen.dart';
 import 'package:twendekaziprovider/screens/login_screen.dart';
-import 'package:twendekaziprovider/screens/location_setup_map_screen_test.dart';
+import 'package:twendekaziprovider/dead%20code/location_setup_map_screen_test.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);

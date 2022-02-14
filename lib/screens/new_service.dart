@@ -4,8 +4,8 @@ import 'package:twendekaziprovider/controllers/product_controller.dart';
 import 'package:twendekaziprovider/model/product_model.dart';
 import 'package:twendekaziprovider/services/database_service.dart';
 
-class NewProductScreen extends StatelessWidget {
-  NewProductScreen({Key? key}) : super(key: key);
+class NewServiceScreen extends StatelessWidget {
+  NewServiceScreen({Key? key}) : super(key: key);
   // final ProductController productController = Get.find();
   final ProductController productController = Get.put(ProductController());
 
@@ -32,7 +32,7 @@ class NewProductScreen extends StatelessWidget {
                         children: const [
                           // IconButton(
                           //   onPressed: () {
-                          //     Get.to(() => const NewProductScreen());
+                          //     Get.to(() => const NewServiceScreen());
                           //   },
                           //   icon: const Icon(
                           //     Icons.add_circle_outline,
