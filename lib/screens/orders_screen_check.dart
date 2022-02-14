@@ -63,7 +63,7 @@ class OrdersScreenCheck extends StatelessWidget {
             );
           },
         ),
-        title: const Text('Products',
+        title: const Text('Orders',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -123,126 +123,108 @@ class OrdersScreenCheck extends StatelessWidget {
     // );
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10),
-      child: Card(
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("product ID: ${product.productid}",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  // Text(DateFormat('dd-MM-yy').format(product.createdAt),
-                  //     style: const TextStyle(
-                  //       fontSize: 16,
-                  //       fontWeight: FontWeight.bold,
-                  //     )),
-                ],
-              ),
-              const SizedBox(height: 10),
-              // ListView.builder(
-              //     shrinkWrap: true,
-              //     physics: const NeverScrollableScrollPhysics(),
-              //     itemCount: products.length,
-              //     itemBuilder: (BuildContext context, int index) {
-              //       return Padding(
-              //         padding: const EdgeInsets.only(bottom: 10),
-              //         child: Row(
-              //           children: [
-              //             Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   Text(products[index].name,
-              //                       style: const TextStyle(
-              //                         fontSize: 14,
-              //                         fontWeight: FontWeight.bold,
-              //                       )),
-              //                   const SizedBox(height: 5),
-              //                   SizedBox(
-              //                     width: 285,
-              //                     child: Text(
-              //                       products[index].description,
-              //                       style: const TextStyle(
-              //                         fontSize: 12,
-              //                       ),
-              //                       overflow: TextOverflow.clip,
-              //                       maxLines: 2,
-              //                     ),
-              //                   ),
-              //                 ])
-              //           ],
-              //         ),
-              //       );
-              //     }),
-              const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                Column(
-                  children: [
-                    const Text("Delivery Fee",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    const SizedBox(height: 10),
-                    Text("$product.deliveryFee",
+      child: InkWell(
+        onTap: () {},
+        child: Card(
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+              child: Container(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          product.productname,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.bookmark_add_outlined,
+                              color: Colors.black),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Rate',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                              )),
+                          const SizedBox(height: 5),
+                          Text('Kshs. ${product.productprice}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ))
+                        ]),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text('Approx. Duration',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                )),
+                            SizedBox(height: 5),
+                            Text('3 Hrs',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Text('Complexity',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w300,
+                                )),
+                            SizedBox(height: 5),
+                            Text('Very Complex',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text('Experience Level',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                            )),
+                        SizedBox(height: 5),
+                        Text('Intermediate',
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Text(product.productdescription,
                         style: const TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
                         )),
-                  ],
-                ),
-                Column(
-                  children: [
-                    const Text("Total",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    const SizedBox(height: 10),
-                    Text("$product.total",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ],
-                )
-              ]),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.black,
-                          minimumSize: const Size(150, 40)),
-                      onPressed: () {
-                        // productController.updateproduct(
-                        //     product, 'isAccepted', !product.isAccepted);
-                      },
-                      child: const Text(
-                        "Accept",
-                        style: TextStyle(fontSize: 12),
-                      )),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.black,
-                          minimumSize: const Size(150, 40)),
-                      onPressed: () {
-                        // productController.updateproduct(
-                        //     product, 'isCancelled', !product.isCancelled);
-                      },
-                      child: const Text(
-                        "Cancel",
-                        style: TextStyle(fontSize: 12),
-                      ))
-                ],
-              )
-            ]),
-          )),
+                    const SizedBox(height: 25)
+                  ])),
+            )),
+      ),
     );
   }
 }

@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twendekaziprovider/navigation/bottom_navigation_bar.dart';
 import 'package:twendekaziprovider/screens/home_screen.dart';
-import 'package:twendekaziprovider/screens/location_setup_map_screen.dart';
-import 'package:twendekaziprovider/screens/location_setup_map_screen_test.dart';
 import 'package:twendekaziprovider/screens/new_product.dart';
 import 'package:twendekaziprovider/screens/notifications_screen.dart';
 import 'package:twendekaziprovider/screens/orders_screen_check.dart';
 import 'package:twendekaziprovider/screens/products_screen.dart';
 import 'package:twendekaziprovider/screens/profile_screen.dart';
-import 'package:twendekaziprovider/screens/registration_screen.dart';
 import 'package:twendekaziprovider/screens/wallet_screen.dart';
 
 import 'firebase_options.dart';
@@ -35,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const BottomNavBar(),
       getPages: [
         GetPage(name: '/products', page: () => ProductScreen()),
         GetPage(name: '/products/new', page: () => NewProductScreen()),

@@ -57,7 +57,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   buildBody() {
     switch (_currentIndex) {
       case 1:
-        return OrdersScreen();
+        return OrdersScreenCheck();
       case 2:
         return const NotificationScreen();
       case 3:

@@ -42,6 +42,7 @@ class OrdersScreen extends StatelessWidget {
         ),
         body: ListView.builder(
           itemCount: productController.products.length,
+          shrinkWrap: true,
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.all(8.0),

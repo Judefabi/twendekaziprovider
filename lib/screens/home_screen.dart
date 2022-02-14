@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 160,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: Service.services.length,
+                    itemCount: serviceController.services.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(left: 25.0),
@@ -232,10 +232,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: Product.product.length,
+                    itemCount: productController.products.length,
                     itemBuilder: (context, index) {
-                      return RecentPosts(
-                        product: productController.products[index],
+                      return Text(
+                        'product',
                       );
                     }))
           ]),
