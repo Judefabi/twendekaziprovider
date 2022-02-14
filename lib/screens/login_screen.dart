@@ -1,3 +1,4 @@
+import 'package:twendekaziprovider/navigation/bottom_navigation_bar.dart';
 import 'package:twendekaziprovider/screens/home_screen.dart';
 import 'package:twendekaziprovider/screens/registration_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -168,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const HomeScreen())),
+                      builder: (context) => const BottomNavBar())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

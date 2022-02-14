@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   UserModel loggedInUser = UserModel();
   final ServiceController serviceController = Get.put(ServiceController());
   final ProductController productController = Get.put(ProductController());
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   // final Service services;
   @override
   void initState() {
@@ -58,9 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 50,
                 child: const Icon(
                   Icons.menu,
-                  size: 50,
+                  size: 40,
                 ),
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white),
                   borderRadius: BorderRadius.circular(12),
@@ -144,76 +145,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 25),
             Container(
-                height: 160,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: serviceController.services.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 25.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                              width: 200,
-                              padding: const EdgeInsets.all(12.0),
-                              color: (index % 2 == 0)
-                                  ? Colors.grey[200]
-                                  : Colors.grey[800],
-                              child: Column(
-                                children: [
-                                  Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            height: 60,
-                                            child: Image.asset(
-                                                'assets/twendekazilogo.jpg')),
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: const Text(
-                                              'Top Provider',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            color: Colors.grey[500],
-                                          ),
-                                        )
-                                      ]),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      serviceController
-                                          .services[index].servicename,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22,
-                                        color: (index % 2 == 0)
-                                            ? Colors.black
-                                            : Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    'Kshs. ${serviceController.services[index].servicerate}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                      color: (index % 2 == 0)
-                                          ? Colors.black
-                                          : Colors.white,
-                                    ),
-                                  )
-                                ],
-                              )),
-                        ),
-                      );
-                    })),
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              height: 160,
+              child: StreamBuilder<List<Service>>(
+                stream: getServices(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong ${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    final services = snapshot.data!;
+                    return ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: services.map(ServicesCard).toList());
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
+            ),
             const SizedBox(
               height: 50,
             ),
@@ -226,18 +175,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
             ),
-            const SizedBox(height: 25),
-            Container(
-                height: 500,
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: productController.products.length,
-                    itemBuilder: (context, index) {
-                      return Text(
-                        'product',
-                      );
-                    }))
+            // const SizedBox(height: 10),
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 25.0, bottom: 10.0, right: 25.0),
+                child: Container(
+                  height: 500,
+                  child: StreamBuilder<List<Product>>(
+                    stream: getProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        final products = snapshot.data!;
+                        return ListView(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: products.map(recentPosts).toList());
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+              ),
+            )
           ]),
         ));
   }
@@ -248,80 +211,32 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
-}
 
-class JobCards extends StatelessWidget {
-  const JobCards({
-    Key? key,
-    required this.services,
-  }) : super(key: key);
-
-  final Service services;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-            width: 200,
-            padding: const EdgeInsets.all(12.0),
-            color: Colors.grey[200],
-            child: Column(
-              children: [
-                Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(height: 60, child: Image.asset('')),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Text(
-                            'Top Provider',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          color: Colors.grey[500],
-                        ),
-                      )
-                    ]),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    services.servicename,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 22),
-                  ),
-                ),
-                Text('Kshs. ${services.servicerate}')
-              ],
-            )),
-      ),
-    );
+  Stream<List<Product>> getProducts() {
+    return _firebaseFirestore.collection('products').snapshots().map(
+        (snapshot) =>
+            snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList());
   }
-}
 
-class RecentPosts extends StatelessWidget {
-  const RecentPosts({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
+  Stream<List<Service>> getServices() {
+    return _firebaseFirestore
+        .collection('providers')
+        .doc('3NwtKCoqq4TzT9OSMJxbxMMAJ283') //change this to reflect the user's id
+        .collection('services')
+        .snapshots()
+        .map((snapshot) =>
+            snapshot.docs.map((doc) => Service.fromJson(doc.data())).toList());
+  }
 
-  final Product product;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: () {},
+  Widget recentPosts(Product product) {
+    return InkWell(
+      onTap: () {},
+      child: Card(
         child: Padding(
-            padding: EdgeInsets.only(bottom: 12.0),
+            padding: const EdgeInsets.only(bottom: 12.0, left: 15),
             child: Container(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                    color: Colors.grey[200],
                     border: Border.all(color: Colors.white),
                     borderRadius: BorderRadius.circular(6)),
                 child: Row(
@@ -334,7 +249,7 @@ class RecentPosts extends StatelessWidget {
                                 padding: const EdgeInsets.all(12),
                                 color: Colors.grey[300],
                                 height: 50,
-                                child: Image.asset(''))),
+                                child: Container())),
                         const SizedBox(width: 10),
                         Column(children: [
                           Text(
@@ -366,7 +281,70 @@ class RecentPosts extends StatelessWidget {
       ),
     );
   }
+
+  Widget ServicesCard(Service services) {
+    return InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+                width: 250,
+                height: 150,
+                padding: const EdgeInsets.all(12.0),
+                color: Colors.grey[800],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                              height: 60,
+                              child: Container(
+                                color: Colors.white,
+                              )),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                services.serviceexpertise,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              color: Colors.grey[500],
+                            ),
+                          )
+                        ]),
+                    Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Text(
+                        services.servicename,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'Kshs. ${services.servicerate}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                )),
+          ),
+        ));
+  }
 }
+
 
 // ActionChip(
 //     label: const Text("Logout"),

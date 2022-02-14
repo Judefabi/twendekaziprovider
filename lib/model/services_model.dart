@@ -3,69 +3,112 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Service extends Equatable {
-  final int
-      serviceId; //we'll be using where serviceId = provserviceIder.serviceId
-  final int providerId;
+class Service extends Equatable{
+  final int serviceId;
+  // final String
+      // userid; //we'll be using where serviceId = provserviceIder.serviceId
+  final String servicedescription;
   final String servicename;
-  final int servicerate; //required this will be the order total
-  const Service(
-      {required this.serviceId,
-      required this.providerId,
-      required this.servicename,
-      required this.servicerate});
+  final int servicerate;
+  final String serviceexpertise; 
+  const Service({
+    required this.serviceId,
+    // required this.userid,
+    required this.servicedescription,
+    required this.servicename,
+    required this.servicerate,
+    required this.serviceexpertise,
+  });
 
-  Service copyWith(
-      {int? serviceId,
-      int? providerId,
-      String? servicename,
-      int? servicerate}) {
-    return Service(
-        serviceId: serviceId ?? this.serviceId,
-        providerId: providerId ?? this.providerId,
-        servicename: servicename ?? this.servicename,
-        servicerate: servicerate ?? this.servicerate);
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'serviceId': serviceId,
-      'providerId': providerId,
-      'servicename': servicename,
-      'servicerate': servicerate,
-    };
-  }
-
-  factory Service.fromSanpshot(DocumentSnapshot snap) {
-    return Service(
-        serviceId: snap['serviceId'],
-        providerId: snap['providerId'],
-        servicename: snap['servicename'],
-        servicerate: snap['servicerate']);
-  }
-  String toJson() => json.encode(toMap());
 
   @override
   List<Object> get props {
-    return [serviceId, providerId, servicename, servicerate];
+    return [
+      serviceId,
+      // userid,
+      servicedescription,
+      servicename,
+      servicerate,
+      serviceexpertise
+    ];
   }
 
-  static List<Service> services = [
-    const Service(
-        serviceId: 1, providerId: 2, servicename: 'Laundry', servicerate: 450),
-    const Service(
-        serviceId: 1, providerId: 3, servicename: 'Plumbing', servicerate: 500),
-    const Service(
-        serviceId: 1, providerId: 4, servicename: 'Pruning', servicerate: 200),
-    const Service(
-        serviceId: 1,
-        providerId: 5,
-        servicename: 'Gardening',
-        servicerate: 200),
-    const Service(
-        serviceId: 1,
-        providerId: 6,
-        servicename: 'Car repair',
-        servicerate: 1300)
-  ];
+
+
+  Service copyWith({
+    int? serviceId,
+    // String? userid,
+    String? servicedescription,
+    String? servicename,
+    int? servicerate,
+    String? serviceexpertise,
+  }) {
+    return Service(
+      serviceId: serviceId ?? this.serviceId,
+      // // // userid: userid ?? this.userid,
+      servicedescription: servicedescription ?? this.servicedescription,
+      servicename: servicename ?? this.servicename,
+      servicerate: servicerate ?? this.servicerate,
+      serviceexpertise: serviceexpertise ?? this.serviceexpertise,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'serviceId': serviceId,
+        // // 'userid': userid,
+        'servicedescription': servicedescription,
+        'servicename': servicename,
+        'servicerate': servicerate,
+        'serviceexpertise': serviceexpertise,
+      };
+
+  static Service fromJson(Map<String, dynamic> json) =>  Service(
+        serviceId: json['serviceId'],
+        // // userid: json['userid'],
+        servicedescription: json['servicedescription'],
+        servicename: json['servicename'],
+        servicerate: json['servicerate'],
+        serviceexpertise: json['serviceexpertise']);
+  
+// @override
+//   bool get stringify => true;
+
+//   static List<Service> services = [
+//     const Service(
+//         serviceId: 1,
+        // userid: '23',
+//         servicedescription: '2',
+//         servicename: 'Laundry',
+//         servicerate: 450,
+//         serviceexpertise: 'Expert'),
+//     const Service(
+//         serviceId: 1,
+        // userid: '23',
+//         servicedescription: '3',
+//         servicename: 'Plumbing',
+//         servicerate: 500,
+//         serviceexpertise: 'Novice'),
+//     const Service(
+//         serviceId: 1,
+        // userid: '23',
+//         servicedescription: '4',
+//         servicename: 'Pruning',
+//         servicerate: 200,
+//         serviceexpertise: 'Expert'),
+//     const Service(
+//         serviceId: 1,
+        // userid: '23',
+//         servicedescription: '5',
+//         servicename: 'Gardening',
+//         servicerate: 200,
+//         serviceexpertise: 'Expert'),
+//     const Service(
+//         serviceId: 1,
+        // userid: '23',
+//         servicedescription: '6',
+//         servicename: 'Car repair',
+//         servicerate: 1300,
+//         serviceexpertise: 'Expert')
+//   ];
+
 }

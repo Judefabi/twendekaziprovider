@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twendekaziprovider/navigation/bottom_navigation_bar.dart';
 import 'package:twendekaziprovider/screens/home_screen.dart';
+import 'package:twendekaziprovider/screens/login_screen.dart';
 import 'package:twendekaziprovider/screens/new_product.dart';
 import 'package:twendekaziprovider/screens/notifications_screen.dart';
 import 'package:twendekaziprovider/screens/orders_screen_check.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const BottomNavBar(),
+      home: const LoginScreen(),
       getPages: [
         GetPage(name: '/products', page: () => ProductScreen()),
         GetPage(name: '/products/new', page: () => NewProductScreen()),
