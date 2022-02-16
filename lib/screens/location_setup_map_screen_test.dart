@@ -11,24 +11,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:twendekaziprovider/screens/home_screen.dart';
 import 'package:twendekaziprovider/screens/login_screen.dart';
 
-class LocationSelection extends StatefulWidget {
-  const LocationSelection({Key? key}) : super(key: key);
+class StoreLocationMap extends StatefulWidget {
+  const StoreLocationMap({Key? key}) : super(key: key);
 
   @override
-  _LocationSelectionState createState() => _LocationSelectionState();
+  _StoreLocationMapState createState() => _StoreLocationMapState();
 }
 
-class _LocationSelectionState extends State<LocationSelection> {
-  // bool mapToggle = false;
+class _StoreLocationMapState extends State<StoreLocationMap> {
+  bool buttonToggle = true;
 
   late Position position;
   late Widget _child;
-  LatLng latlng = LatLng(0.0, 0.0);
+  LatLng latlng = LatLng(32.5259483, 35.8506622);
   // late LatLng latlng;
   late GoogleMapController mapController;
   // List<Marker> allMarkers = [];
   final List<Marker> _markers = [];
-
   @override
   void initState() {
     _child = const Center(
@@ -45,35 +44,6 @@ class _LocationSelectionState extends State<LocationSelection> {
       position = res;
       _child = mapWidget();
     });
-
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      // return Future.error('Location services are disabled.');
-      Fluttertoast.showToast(msg: 'Location services are disabled');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // return Future.error('Location permissions are denied');
-        Fluttertoast.showToast(msg: 'Location permissions are disabled');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      Fluttertoast.showToast(msg: 'Permissions are denied forever');
-    }
-
-    // await getAddress(position.latitude, position.longitude);
   }
 
   @override
@@ -91,7 +61,7 @@ class _LocationSelectionState extends State<LocationSelection> {
           ),
           title: const Text('Select Location',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               )),
           centerTitle: true,
@@ -103,8 +73,8 @@ class _LocationSelectionState extends State<LocationSelection> {
           children: [
             Container(child: _child),
             Positioned(
-                bottom: 30,
-                child: Material(
+              bottom: 30,
+              child: Material(
                   elevation: 5,
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.black,
@@ -113,8 +83,7 @@ class _LocationSelectionState extends State<LocationSelection> {
                       minWidth: MediaQuery.of(context).size.width * 0.7,
                       onPressed: () async {
                         // Position position = await Geolocator.getCurrentPosition(
-                        //     desiredAccuracy:
-                        //         LocationAccuracy.bestForNavigation);
+                        //     desiredAccuracy: LocationAccuracy.bestForNavigation);
                         final FirebaseAuth auth = FirebaseAuth.instance;
                         final User? user = auth.currentUser;
                         final uid = user!.uid;
@@ -123,12 +92,13 @@ class _LocationSelectionState extends State<LocationSelection> {
                             .doc(uid)
                             .set({
                               'coords': new GeoPoint(
-                                  position.latitude, position.longitude)
+                                  latlng.latitude, latlng.longitude)
                             }, SetOptions(merge: true))
                             .then((value) => Fluttertoast.showToast(
                                 msg: 'Location saved successfully'))
                             .catchError((error) => Fluttertoast.showToast(
                                 msg: "Failed to add location: $error"));
+                        Get.to(const HomeScreen());
                       },
                       // updateLocation;
                       // Get.to(const LoginScreen());
@@ -139,15 +109,24 @@ class _LocationSelectionState extends State<LocationSelection> {
                             fontSize: 20,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
-                      )),
-                )),
+                      ))),
+            ),
             const Align(
                 alignment: Alignment.center,
                 child: Icon(
-                  Icons.push_pin_rounded,
+                  Icons.location_searching_sharp,
                   size: 50,
                   color: Colors.black,
                 ))
+            // Image.asset(
+            //   'assets/greenpushpin.png',
+            //   frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            //     return Transform.translate(
+            //       offset: const Offset(0, 0),
+            //       child: child,
+            //     );
+            //   },
+            // )
           ],
         ));
   }
@@ -155,10 +134,10 @@ class _LocationSelectionState extends State<LocationSelection> {
   Widget mapWidget() {
     return GoogleMap(
       mapType: MapType.normal,
-      // markers: _markers, //we want to have the marker class but not display the marker on the map
+      // markers: allMarkers(),
       onMapCreated: (mapController) {
         final marker = Marker(
-          markerId: const MarkerId('locmarker'),
+          markerId: const MarkerId('0'),
           position: LatLng(position.latitude, position.longitude),
         );
 
@@ -169,11 +148,90 @@ class _LocationSelectionState extends State<LocationSelection> {
           _markers.first =
               _markers.first.copyWith(positionParam: object.target);
           latlng = object.target;
+          buttonToggle = false;
         });
+        // Fluttertoast.showToast(
+        //     msg:
+        //         // 'Position: ${object.target.latitude}, ${object.target.longitude}'
+        //         );
       },
       initialCameraPosition: CameraPosition(
           target: LatLng(position.latitude, position.longitude), zoom: 17.0),
-      myLocationButtonEnabled: true,
+      // myLocationButtonEnabled: true,
+      // onCameraIdle: () async {
+      //   // notify map stopped moving
+      //   // mapPickerController.mapFinishedMoving!();
+      //   //get address name from camera position
+      //   List<Placemark> placemarks = await placemarkFromCoordinates(
+      //     object.target.latitude,
+      //     cameraPosition.target.longitude,
+      //   );
+      // }
     );
   }
+
+  // void onMapCreated(controller) {
+  //   setState(() {
+  //     mapController = controller;
+  //   });
+  // }
+
 }
+
+
+// import 'package:flutter/material.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+// class StoreLocationMap extends StatefulWidget {
+//   const StoreLocationMap({
+//     Key? key,
+//   }) : super(key: key);
+
+//   @override
+//   _StoreLocationMapState createState() => _StoreLocationMapState();
+// }
+
+// class _StoreLocationMapState extends State<StoreLocationMap> {
+//   final List<Marker> _markers = [];
+//   late Position position;
+//   late GoogleMapController mapController;
+//    late Widget _child;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       alignment: Alignment.center,
+//       children: [
+//         GoogleMap(
+//           initialCameraPosition: CameraPosition(
+//               target: LatLng(position.latitude, position.longitude), zoom: 14),
+//           markers: _markers.toSet(),
+//           onMapCreated: (controller) {
+//             final marker = Marker(
+//               markerId: MarkerId('0'),
+//               position: LatLng(position.latitude, position.longitude),
+//             );
+
+//             _markers.add(marker);
+//           },
+//           onCameraMove: (position) {
+//             setState(() {
+//               _markers.first =
+//                   _markers.first.copyWith(positionParam: position.target);
+//             });
+//           },
+//         ),
+//         // Image.asset(
+//         //   'assets/images/delivery-area-start-pin.png',
+//         //   frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+//         //     return Transform.translate(
+//         //       offset: const Offset(8, -37),
+//         //       child: child,
+//         //     );
+//         //   },
+//         // )
+//       ],
+//     );
+//   }
+// }

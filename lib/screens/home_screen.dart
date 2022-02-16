@@ -145,7 +145,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 25),
             Container(
-              padding: const EdgeInsets.only(left: 25, right: 25),
               height: 160,
               child: StreamBuilder<List<Service>>(
                 stream: getServices(),
@@ -179,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 25.0, bottom: 10.0, right: 25.0),
+                    left: 15.0, bottom: 10.0, right: 10.0),
                 child: Container(
                   height: 500,
                   child: StreamBuilder<List<Product>>(
@@ -221,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Stream<List<Service>> getServices() {
     return _firebaseFirestore
         .collection('providers')
-        .doc('3NwtKCoqq4TzT9OSMJxbxMMAJ283') //change this to reflect the user's id
+        .doc('3NwtKCoqq4TzT9OSMJxbxMMAJ283')
         .collection('services')
         .snapshots()
         .map((snapshot) =>
@@ -233,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {},
       child: Card(
         child: Padding(
-            padding: const EdgeInsets.only(bottom: 12.0, left: 15),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -291,7 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(12),
             child: Container(
                 width: 250,
-                height: 150,
                 padding: const EdgeInsets.all(12.0),
                 color: Colors.grey[800],
                 child: Column(

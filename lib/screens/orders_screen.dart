@@ -5,6 +5,7 @@ import 'package:twendekaziprovider/controllers/product_controller.dart';
 import 'package:twendekaziprovider/model/product_model.dart';
 import 'package:intl/intl.dart';
 import 'package:twendekaziprovider/model/product_model.dart';
+import 'package:twendekaziprovider/screens/order_details.dart';
 
 class OrdersScreen extends StatelessWidget {
   OrdersScreen({Key? key}) : super(key: key);
@@ -65,7 +66,9 @@ class OrdersScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Get.to(OrderDetailsScreen(product: product));
+        },
         child: Card(
             margin: EdgeInsets.zero,
             child: Padding(
@@ -108,7 +111,7 @@ class OrdersScreen extends StatelessWidget {
                               ))
                         ]),
                     const SizedBox(height: 15),
-                    Row(
+                    Row(  
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
