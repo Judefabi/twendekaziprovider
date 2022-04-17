@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocoding/geocoding.dart';
+// import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,14 +11,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:twendekaziprovider/screens/home_screen.dart';
 import 'package:twendekaziprovider/screens/login_screen.dart';
 
-class StoreLocationMap extends StatefulWidget {
-  const StoreLocationMap({Key? key}) : super(key: key);
+class LocationSelection extends StatefulWidget {
+  const LocationSelection({Key? key}) : super(key: key);
 
   @override
-  _StoreLocationMapState createState() => _StoreLocationMapState();
+  _LocationSelectionState createState() => _LocationSelectionState();
 }
 
-class _StoreLocationMapState extends State<StoreLocationMap> {
+class _LocationSelectionState extends State<LocationSelection> {
   bool buttonToggle = true;
 
   late Position position;
@@ -183,16 +183,16 @@ class _StoreLocationMapState extends State<StoreLocationMap> {
 // import 'package:geolocator/geolocator.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-// class StoreLocationMap extends StatefulWidget {
-//   const StoreLocationMap({
+// class LocationSelection extends StatefulWidget {
+//   const LocationSelection({
 //     Key? key,
 //   }) : super(key: key);
 
 //   @override
-//   _StoreLocationMapState createState() => _StoreLocationMapState();
+//   _LocationSelectionState createState() => _LocationSelectionState();
 // }
 
-// class _StoreLocationMapState extends State<StoreLocationMap> {
+// class _LocationSelectionState extends State<LocationSelection> {
 //   final List<Marker> _markers = [];
 //   late Position position;
 //   late GoogleMapController mapController;

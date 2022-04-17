@@ -3,16 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:twendekaziprovider/controllers/product_controller.dart';
-import 'package:twendekaziprovider/model/product_model.dart';
+import 'package:twendekaziprovider/controllers/order_controller.dart';
+import 'package:twendekaziprovider/model/bids_model.dart';
+import 'package:twendekaziprovider/model/order_model.dart';
 import 'package:intl/intl.dart';
-import 'package:twendekaziprovider/model/product_model.dart';
+import 'package:twendekaziprovider/model/order_model.dart';
+import 'package:twendekaziprovider/screens/orders_screen.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
-  final Product product;
-  OrderDetailsScreen({Key? key, required this.product}) : super(key: key);
+  final Order order;
+  OrderDetailsScreen({Key? key, required this.order}) : super(key: key);
 
-  final ProductController productController = Get.put(ProductController());
+  // final orderController orderController = Get.put(orderController());
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
@@ -60,24 +62,28 @@ class OrderDetailsScreen extends StatelessWidget {
                             onPressed: () async {
                               final FirebaseAuth auth = FirebaseAuth.instance;
                               final User? user = auth.currentUser;
-                              final uid = user!.uid;
-                              FirebaseFirestore.instance
-                                  .collection('products')
-                                  .doc('1zY7MjlfhN4SgKz8XlVT')
-                                  .collection('bids')
-                                  .doc()
-                                  .set({
-                                    // 'coords': ,
-                                  }, SetOptions(merge: true))
-                                  .then((value) => Fluttertoast.showToast(
-                                      msg: 'Bid Plced successfully'))
-                                  .catchError((error) => Fluttertoast.showToast(
-                                      msg: "Failed to place bid: $error"));
+
+                              // _saveOrder();
+                              final bid = Bid(
+                                ordername: order.ordername,
+                                orderid: order.orderid,
+                                orderdescription: order.orderdescription,
+                                orderdetails: order.orderdetails,
+                                ordercreatedAt: order.ordercreatedAt,
+                                ordercategory: order.ordercategory,
+                                orderdate: order.orderdate,
+                                orderownerid: order.orderownerid,
+                                orderprice: order.orderprice,
+                                providerid: user!.uid,
+                                isAssigned: false,
+                              );
+
+                              placeBid(bid);
                             },
                             // updateLocation;
                             // Get.to(const LoginScreen());
                             child: const Text(
-                              "PLACE BID", 
+                              "PLACE BID",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 16,
@@ -104,7 +110,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              product.productname,
+                              order.ordername,
                               style: const TextStyle(
                                   fontSize: 26, fontWeight: FontWeight.bold),
                             ),
@@ -121,7 +127,7 @@ class OrderDetailsScreen extends StatelessWidget {
                             thickness: 0.5),
                         // const SizedBox(height: 25),
                         Text(
-                          product.productdescription,
+                          order.orderdescription,
                           style: const TextStyle(
                             fontSize: 14,
                           ),
@@ -141,7 +147,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w300,
                                   )),
                               const SizedBox(height: 5),
-                              Text('Kshs. ${product.productprice}',
+                              Text('Kshs. ${order.orderprice}',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -195,15 +201,15 @@ class OrderDetailsScreen extends StatelessWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text('Experience Level',
+                          children: [
+                            const Text('Category',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                 )),
-                            SizedBox(height: 5),
-                            Text('Intermediate',
-                                style: TextStyle(
+                            const SizedBox(height: 5),
+                            Text(order.ordercategory,
+                                style: const TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold)),
                           ],
                         ),
@@ -218,14 +224,27 @@ class OrderDetailsScreen extends StatelessWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             )),
-                        const Text(
-                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-                            style: TextStyle(
+                        Text(order.orderdetails,
+                            style: const TextStyle(
                               fontSize: 14,
                             ))
                       ])),
                 ]))
           ]),
         ));
+  }
+
+  Future placeBid(Bid bid) async {
+    final placebid = FirebaseFirestore.instance
+        .collection('orders')
+        .doc(order.orderid)
+        .collection('bids')
+        .doc();
+
+    final json = bid.toJson();
+    await placebid.set(json).then((value) => {
+          Fluttertoast.showToast(msg: "Bid placed Successfully"),
+          Get.to(OrdersScreen()),
+        });
   }
 }

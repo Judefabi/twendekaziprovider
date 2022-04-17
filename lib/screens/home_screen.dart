@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
   final ServiceController serviceController = Get.put(ServiceController());
-  final ProductController productController = Get.put(ProductController());
+  // final ProductController productController = Get.put(ProductController());
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   // final Service services;
   @override

@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
             signIn(emailController.text, passwordController.text);
           },
           child: const Text(
-            "Login",
+            "LOG IN",
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
@@ -117,11 +117,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
-                        height: 200,
-                        child: Image.asset(
-                          "assets/logo.png",
-                          fit: BoxFit.contain,
-                        )),
+                        // height: 200,
+                        // child: Image.asset(
+                        //   "assets/logo.png",
+                        //   fit: BoxFit.contain,
+                        // )
+                        ),
                     const SizedBox(height: 45),
                     emailField,
                     const SizedBox(height: 25),

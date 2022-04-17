@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:twendekaziprovider/controllers/product_controller.dart';
 import 'package:twendekaziprovider/model/product_model.dart';
 import 'package:intl/intl.dart';
-import 'package:twendekaziprovider/model/product_model.dart';
+import 'package:twendekaziprovider/model/order_model.dart';
 import 'package:twendekaziprovider/screens/order_details.dart';
 
 class OrdersScreen extends StatelessWidget {
   OrdersScreen({Key? key}) : super(key: key);
 
-  final ProductController productController = Get.put(ProductController());
+  // final ProductController productController = Get.put(ProductController());
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,14 +42,14 @@ class OrdersScreen extends StatelessWidget {
           )
         ],
       ),
-      body: StreamBuilder<List<Product>>(
-        stream: getProducts(),
+      body: StreamBuilder<List<Order>>(
+        stream: getOrders(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong ${snapshot.error}');
           } else if (snapshot.hasData) {
-            final products = snapshot.data!;
-            return ListView(children: products.map(buildProduct).toList());
+            final orders = snapshot.data!;
+            return ListView(children: orders.map(buildOrder).toList());
           } else {
             return const Center(child: CircularProgressIndicator());
           }
@@ -56,18 +58,17 @@ class OrdersScreen extends StatelessWidget {
     );
   }
 
-  Stream<List<Product>> getProducts() {
-    return _firebaseFirestore.collection('products').snapshots().map(
-        (snapshot) =>
-            snapshot.docs.map((doc) => Product.fromJson(doc.data())).toList());
+  Stream<List<Order>> getOrders() {
+    return _firebaseFirestore.collection('orders').snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Order.fromJson(doc.data())).toList());
   }
 
-  Widget buildProduct(Product product) {
+  Widget buildOrder(Order order) {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10),
       child: InkWell(
         onTap: () {
-          Get.to(OrderDetailsScreen(product: product));
+          Get.to(OrderDetailsScreen(order: order));
         },
         child: Card(
             margin: EdgeInsets.zero,
@@ -82,7 +83,7 @@ class OrdersScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          product.productname,
+                          order.ordername,
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -104,14 +105,14 @@ class OrdersScreen extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                               )),
                           const SizedBox(height: 5),
-                          Text('Kshs. ${product.productprice}',
+                          Text('Kshs. ${order.orderprice}',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ))
                         ]),
                     const SizedBox(height: 15),
-                    Row(  
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
@@ -161,7 +162,7 @@ class OrdersScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 25),
-                    Text(product.productdescription,
+                    Text(order.orderdescription,
                         style: const TextStyle(
                           fontSize: 16,
                         )),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:twendekaziprovider/screens/home_screen.dart';
+import 'package:twendekaziprovider/screens/home/home_screen.dart';
 import 'package:twendekaziprovider/screens/notifications_screen.dart';
 import 'package:twendekaziprovider/screens/orders_screen.dart';
 import 'package:twendekaziprovider/dead%20code/orders_screen_check.dart';
@@ -31,23 +31,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.apps),
-            title: Text('Home'),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.work_rounded),
-            title: Text('Orders'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            title: Text('Notifications'),
+            label: 'Orders',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text('Profile'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            title: Text('Wallet'),
+            label: 'Profile',
           ),
         ],
       ),
@@ -59,14 +51,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
       case 1:
         return OrdersScreen();
       case 2:
-        return const NotificationScreen();
-      case 3:
         return const ProfileScreen();
-      case 4:
-        return const WalletScreen();
-
       case 0:
-        return const HomeScreen();
+        return HomeScreen();
     }
   }
 }
